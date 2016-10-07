@@ -1,0 +1,35 @@
+extend core/core.jade
+
+block content
+  .jumbotron.gradient_img(style="background-image: url('../client/images/core/splash.jpg'); height: auto; width: 100%; padding-bottom: 0px; margin: 0px;")
+    .container
+      .div(id="index_splash")
+        .row
+          .col-sm-4
+            div(style='text-align: center;')
+              img.img-circle.animated.flipInX(id="splash_profile_pic" src='../client/images/core/profile.jpg', alt='profile picture', style='width: 60%; white-space:nowrap;')
+          .col-sm-8
+            h1.animated.slideInRight(id="splash_text_sml_") Timothy Damir Kovacic
+            |   &#x9;  &#x9;
+            p.animated.slideInRight(id="splash_text_sml_")
+              |Web Developer for Ford Motor Company
+            p
+              br
+              .row
+                .col-sm-4
+                  p.animated.slideInRight
+                    |Age: 22
+                .col-sm-4
+                  p.animated.slideInRight
+                    |Passion: Using Technology to better others
+                .col-sm-4
+                  a.btn.btn-primary.btn-lg.animated.flipInX(id="splash_link_btn", href='https://www.linkedin.com/in/timothy-kovacic-7731129a', role='button' style='margin-bottom: 25px;') LinkedIn
+        hr.animated.zoomIn(style="border: 3px solid white;" id="splash_hr")
+        .list-column.animated.slideInLeft(id='column_div_sum' name='column_div_sum')
+            p(style='padding-left: 35px; padding-right: 35px;' id="splash_text_lrg_summary_text")
+              |I have always had an interest in technology, which started at the age of nine when my dad purchased Dark Visual Basic IDE and a manual for me to experiment. In High School I took introduction technology classes learning about the anatomy and repair of hardware as well as simple visual basic programming. I graduated from Purdue University in 2016 with a bachelors in Computer Networking and Information Technology with a concentration in Information Technology Systems.  I still retain this passion for working with computers and love being able to architect a project at my desk. I am a self-driven employee who enjoys the tiniest details of a project rather than just a slice of the big picture. Projects that involve something new and offer a learning experience to me are the projects that excite me the most. Currently I write Perl, CSS, HTML, JS/JQuery, and SQL to develop and provide front end and back end support for Ford's Network Operations Automation Tools.
+        br
+    .div(style='text-align: center;')
+      img.animated.flipInX(src='../client/images/core/down_arrow.png' style='width: 5%;' id='education_down_arrow')
+  .div.gradient(class='gradient' id='gradient' role='navigation' style='height: 50px;')
+  include core/modals
