@@ -11,7 +11,7 @@ core = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	
 		$('#ctx').css('width', $(document).width());
 		ctx.font = '30px Arial';
-		var socket = io('http://localhost:3000'); 
+		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      //http://localhost:3000
 		socket.on('greeting-from-server', function (message) { 
 			console.log(message.greeting);
 			socket.emit('greeting-from-client', { 
