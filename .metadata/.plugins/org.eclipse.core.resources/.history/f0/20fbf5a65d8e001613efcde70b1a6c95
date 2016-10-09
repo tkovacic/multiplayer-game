@@ -158,8 +158,8 @@ Bullet.update = function() {
 		var bullet = Bullet.list[i];
 		bullet.update();
 		pack.push({
-			x:bullet.x,
-			y:bullet.y,
+			x:bullet.x *,
+			y:bullet.y *,
 		});
 	}
 	return pack;
