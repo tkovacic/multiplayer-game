@@ -1,0 +1,68 @@
+var exp = require("express");
+var app = exp();
+var router = exp.Router();
+var socketIO = require('socket.io');
+var final_html;
+var template_index = require("jade").compileFile(__dirname + "/views/index.jade");
+var server = require('http').Server(app);
+
+//views
+app.set("views", __dirname + "/views");
+app.set("view engine", "jade");
+
+//middleware
+router.use(function(req, res, next) {
+	console.log("/" + req.method);
+	next();
+});
+
+//routes
+router.get("/", function(req, res, next) {
+	try {
+		final_html = template_index ({ title : "Demo" });
+		res.send(final_html);
+	} catch (e) {
+		next(e);
+	}
+});
+app.use(exp.static(__dirname + "/"), router);
+
+router.get("/api", function(req, res) {
+	res.json({"message": "API Page"});
+});
+app.use("/api", router);
+
+//listening to port
+server.listen(process.env.PORT || 3000, function() {
+	console.log("listening at http://localhost:" + (process.env.PORT || 3000));
+});
+
+var SOCKET_LIST = {};
+
+//socket.io code block
+var io = socketIO(server);
+
+io.on('connection', function (socket) { 
+	socket.id = Math.random();
+	socket.x = 0;
+	socket.y = 0;
+	SOCKET_LIST[socket.id] = socket;
+	
+	socket.emit('greeting-from-server', { greeting: 'Hello Client' }); 
+	socket.on('greeting-from-client', function (message) { 
+		console.log(message);
+	});
+});
+
+setInterval(function() {
+	var pack = [];
+	for(var i in SOCKET_LIST) {
+		var socket = SOCKET_LIST[i];
+		socket.x++;
+		socket.y++;
+		socket.emit('newPosition', {
+			x:socket.x,
+			y:socket.y
+		});
+	}
+},1000/25);

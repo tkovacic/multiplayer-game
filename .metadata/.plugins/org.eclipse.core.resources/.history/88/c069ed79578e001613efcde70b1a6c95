@@ -1,0 +1,67 @@
+$( document ).ready(function() {
+	var APP = new core();
+	APP.init();
+});
+
+core = function() {
+	var $this = this;
+	//this.local_url = 'tdk-portfolio-herokuapp.com';
+	
+	this.init = function() {
+		var ctx = document.getElementById('ctx').getContext('2d');	
+		$('#ctx').css('width', $(document).width());
+		ctx.font = '30px Arial';
+		var socket = io('http://localhost:3000'); 
+		socket.on('greeting-from-server', function (message) { 
+			console.log(message.greeting);
+			socket.emit('greeting-from-client', { 
+				greeting: 'Hello Server' 
+			});
+		});
+		
+		socket.on('newPositions', function(data) {
+			ctx.clearRect(0,0,$(document).width(),500);
+			for(var i = 0; i < data.player.length; i++) {
+				var temp_img = document.createElement('img');
+				temp_img.src = data.player[i].img;
+				temp_img.id = data.player[i].id;
+				if(data.player[i].dir == true) {
+					temp_img.class = 'flipped';
+				} else {
+					temp_img.class = '';
+				}
+				ctx.drawImage(temp_img, data.player[i].x, data.player[i].y)
+				//ctx.fillText(data.player[i].number, data.player[i].x, data.player[i].y);
+			}
+			for(var i = 0; i < data.bullet.length; i++) {
+				ctx.fillRect(data.bullet[i].x - 5, data.bullet[i].y - 5, 10, 10);
+			}
+		});
+		
+		document.onkeydown = function(e) {
+			if(e.keyCode == 68)//d
+				socket.emit('keypress', {inputID:'right', state:true});
+			else if(e.keyCode == 83)//s
+				socket.emit('keypress', {inputID:'down', state:true});
+			else if(e.keyCode == 65)//a
+				socket.emit('keypress', {inputID:'left', state:true});
+			else if(e.keyCode == 87)//w
+				socket.emit('keypress', {inputID:'up', state:true});
+		}
+		
+		document.onkeyup = function(e) {
+			if(e.keyCode == 68)//d
+				socket.emit('keypress', {inputID:'right', state:false});
+			else if(e.keyCode == 83)//s
+				socket.emit('keypress', {inputID:'down', state:false});
+			else if(e.keyCode == 65)//a
+				socket.emit('keypress', {inputID:'left', state:false});
+			else if(e.keyCode == 87)//w
+				socket.emit('keypress', {inputID:'up', state:false});
+		}
+		
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+			//
+		}
+	};
+};

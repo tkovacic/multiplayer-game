@@ -1,0 +1,3 @@
+extend /core/core
+block content
+  canvas(style='padding-top: 30px;' id='ctx' width='1000' height='1000')
