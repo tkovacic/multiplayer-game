@@ -1,0 +1,27 @@
+{
+  "name": "express-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tkovacic/express-demo.git"
+  },
+  "author": "Tim Kovacic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tkovacic/express-demo/issues"
+  },
+  "homepage": "https://github.com/tkovacic/express-demo#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "jade": "^1.11.0",
+    "multer": "^1.2.0"
+  }
+}
