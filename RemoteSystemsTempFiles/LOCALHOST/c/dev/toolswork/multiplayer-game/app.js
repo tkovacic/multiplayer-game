@@ -63,7 +63,6 @@ var Entity = function() {
 var Player = function(id) {
 	var self = Entity();
 	self.id = id;
-	self.limiter = 0.3;
 	self.number = "" + Math.floor(10 * Math.random());
 	self.pressingRight = false;
 	self.pressingLeft = false;
@@ -121,8 +120,8 @@ Player.update = function() {
 		var player = Player.list[i];
 		player.update();
 		pack.push({
-			x:player.x * player.limiter,
-			y:player.y * player.limiter,
+			x:player.x,
+			y:player.y,
 			img:player.img,
 			facingRight:player.facingRight,
 		});
@@ -134,7 +133,6 @@ Player.update = function() {
 var Bullet = function(angle) {
 	var self = Entity();
 	self.id = Math.random();
-	self.limiter = 0.3;
 	self.spdX = Math.cos(angle/180*Math.PI) * 10;
 	self.spdY = Math.sin(angle/180*Math.PI) * 10;
 	self.timer = 0;
@@ -160,8 +158,8 @@ Bullet.update = function() {
 		var bullet = Bullet.list[i];
 		bullet.update();
 		pack.push({
-			x:bullet.x * bullet.limiter,
-			y:bullet.y * bullet.limiter,
+			x:bullet.x *,
+			y:bullet.y *,
 		});
 	}
 	return pack;
