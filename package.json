@@ -13,9 +13,9 @@
   },
   "homepage": "https://github.com/tkovacic/multiplayer-game#readme",
   "dependencies": {
-    "express": "^4.14.0",
+    "express": "4.14.0",
     "jade": "^1.11.0",
-    "socket.io": "^1.4.8"
+    "socket.io": "1.5.0"
   },
   "devDependencies": {},
   "repository": {
