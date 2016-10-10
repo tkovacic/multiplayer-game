@@ -148,6 +148,10 @@ Player.onConnect = function(socket) {
 		else if(data.inputID === 'mouseangle')
 			player.mouseAngle = data.state;
 	});
+	
+	socket.on('changeUsername', function(data) {
+		player.username = data.inputID;
+	});
 }
 Player.onDisconnect = function(socket) {
 	playerCount -= 1;

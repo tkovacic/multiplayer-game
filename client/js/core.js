@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$( document ).ready(function() { //Init scripts when page is done loading
 	var APP = new core();
 	APP.init();
 });
@@ -10,28 +10,22 @@ core = function() {
 	var height = 200;
 	
 	this.init = function() {
-		var ctx = document.getElementById('ctx').getContext('2d');	
+		var ctx = document.getElementById('ctx').getContext('2d');	//create 2d canvas
 		$('#ctx').css('width', width);
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      localhost:3000
-		socket.on('greeting-from-server', function (message) { 
-			console.log(message.greeting);
-			socket.emit('greeting-from-client', { 
-				greeting: 'Hello Server' 
-			});
-		});
-		
-		socket.on('newPositions', function(data) {
-			ctx.clearRect(0,0,width,height);
-			for(var i = 0; i < data.player.length; i++) {
-				ctx.fillText(data.player[i].username, data.player[i].x + 15, data.player[i].y);
-				var temp_img = document.createElement('img');
-				temp_img.src = data.player[i].img;
-				temp_img.id = data.player[i].id;
-				temp_img.width = (temp_img.width);
-				if(data.player[i].frame == 0) {
-					ctx.drawImage(temp_img, 0, 0, 64, 64, data.player[i].x, data.player[i].y, 64, 64);
+		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
+		$this.initButtons(socket);
+		socket.on('newPositions', function(data) { //whenever new positions are sent out
+			ctx.clearRect(0,0,width,height); //clear canvas
+			for(var i = 0; i < data.player.length; i++) { //foreach player in the game
+				ctx.fillText(data.player[i].username, data.player[i].x + 15, data.player[i].y); //remap usernames
+				var temp_img = document.createElement('img'); //generate image element
+				temp_img.src = data.player[i].img; //provide proper sprite
+				temp_img.id = data.player[i].id; //set id
+				temp_img.width = (temp_img.width); //set width
+				if(data.player[i].frame == 0) { //if frame is 0
+					ctx.drawImage(temp_img, 0, 0, 64, 64, data.player[i].x, data.player[i].y, 64, 64); //cut first half of sprite sheet
 				} else {
-					ctx.drawImage(temp_img, 64, 0, 64, 64, data.player[i].x, data.player[i].y, 64, 64);
+					ctx.drawImage(temp_img, 64, 0, 64, 64, data.player[i].x, data.player[i].y, 64, 64); //cut second half of sprite sheet
 				}
 			}
 			for(var i = 0; i < data.bullet.length; i++) {
@@ -80,4 +74,13 @@ core = function() {
 			window.location = 'https://tdk-portfolio.herokuapp.com'
 		}
 	};
+	
+	this.initButtons = function(socket) {
+		$('#usernameBtn').on('click', function() {
+			var user = $('#usernameText').val();
+			console.log(user);
+			socket.emit('changeUsername', {inputID:user});
+			$('#username').modal('toggle');
+		});
+	}
 };
