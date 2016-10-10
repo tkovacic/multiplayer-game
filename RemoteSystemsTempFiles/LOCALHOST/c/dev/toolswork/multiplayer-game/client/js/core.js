@@ -12,7 +12,7 @@ core = function() {
 	this.init = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	//create 2d canvas
 		$('#ctx').css('width', width);
-		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
+		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      localhost:3000
 		$this.initButtons(socket);
 		socket.on('newPositions', function(data) { //whenever new positions are sent out
 			ctx.clearRect(0,0,width,height); //clear canvas
