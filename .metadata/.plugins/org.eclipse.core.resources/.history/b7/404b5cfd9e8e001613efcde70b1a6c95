@@ -1,6 +1,5 @@
 body {
 	font:14px/1.5 Arial, Helvetica, sans-serif;
-	background: black;
 }
 
 canvas {
