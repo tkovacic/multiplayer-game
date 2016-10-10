@@ -87,7 +87,7 @@ var Player = function(id) {
 		
 		if(self.pressingRight == false && self.pressingLeft == false && self.pressingUp == false && self.pressingDown == false) {
 			self.img.tickCount += 1;
-			if(self.img.tickCount > 25) {
+			if(self.img.tickCount > 30) {
 				self.img.tickCount = 0;
 				if(self.img.frameIndex == 0) {
 					self.img.frameIndex = 1;

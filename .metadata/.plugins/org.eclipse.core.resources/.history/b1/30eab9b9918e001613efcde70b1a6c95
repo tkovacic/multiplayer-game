@@ -12,7 +12,7 @@ core = function() {
 	this.init = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	
 		$('#ctx').css('width', width);
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      localhost:3000
+		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
 		socket.on('greeting-from-server', function (message) { 
 			console.log(message.greeting);
 			socket.emit('greeting-from-client', { 

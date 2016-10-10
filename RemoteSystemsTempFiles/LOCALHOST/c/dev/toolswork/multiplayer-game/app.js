@@ -60,9 +60,12 @@ var Entity = function() {
 }
 //END OF ENTITY
 //BEGINING OF PLAYER
+var playerCount = 0;
 var Player = function(id) {
 	var self = Entity();
+	playerCount += 1;
 	self.id = id;
+	self.username = 'Guest ' + playerCount;
 	self.number = "" + Math.floor(10 * Math.random());
 	self.pressingRight = false;
 	self.pressingLeft = false;
@@ -84,7 +87,7 @@ var Player = function(id) {
 		
 		if(self.pressingRight == false && self.pressingLeft == false && self.pressingUp == false && self.pressingDown == false) {
 			self.img.tickCount += 1;
-			if(self.img.tickCount > 30) {
+			if(self.img.tickCount > 25) {
 				self.img.tickCount = 0;
 				if(self.img.frameIndex == 0) {
 					self.img.frameIndex = 1;
@@ -147,6 +150,7 @@ Player.onConnect = function(socket) {
 	});
 }
 Player.onDisconnect = function(socket) {
+	playerCount -= 1;
 	delete Player.list[socket.id];
 }
 Player.update = function() {
@@ -155,6 +159,7 @@ Player.update = function() {
 		var player = Player.list[i];
 		player.update();
 		pack.push({
+			username:player.username,
 			x:player.x,
 			y:player.y,
 			img:player.img.source,

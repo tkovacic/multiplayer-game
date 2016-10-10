@@ -12,7 +12,7 @@ core = function() {
 	this.init = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	
 		$('#ctx').css('width', width);
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      localhost:3000
+		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
 		socket.on('greeting-from-server', function (message) { 
 			console.log(message.greeting);
 			socket.emit('greeting-from-client', { 
@@ -23,7 +23,7 @@ core = function() {
 		socket.on('newPositions', function(data) {
 			ctx.clearRect(0,0,width,height);
 			for(var i = 0; i < data.player.length; i++) {
-				ctx.fillText(data.player[i].username, data.player[i].x + 15, data.player[i].y);
+				ctx.fillText(data.player[i].username, data.player[i].x, data.player[i].y);
 				var temp_img = document.createElement('img');
 				temp_img.src = data.player[i].img;
 				temp_img.id = data.player[i].id;
