@@ -44,8 +44,8 @@ var SOCKET_LIST = {};
 var Entity = function() {
 	var self = {
 		id: "",
-		x: 250,
-		y: 250,
+		x: 100,
+		y: 100,
 		spdX: 0,
 		spdY: 0,
 	}
@@ -68,20 +68,51 @@ var Player = function(id) {
 	self.pressingLeft = false;
 	self.pressingUp = false;
 	self.pressingDown = false;
+	self.clickFire = false;
+	self.mouseAngle = 0;
+	self.pressingDown = false;
 	self.maxSpd = 5;
-	self.img = "../client/img/player/temp.png";
+	self.img = {
+			source:"../client/img/player/temp_sheet.png",
+			frameIndex:0,
+			tickCount:0,
+	};
 	var super_update = self.update;
 	self.update = function() {
 		self.updateSpd();
 		super_update();
+		
+		if(self.pressingRight == false && self.pressingLeft == false && self.pressingUp == false && self.pressingDown == false) {
+			self.img.tickCount += 1;
+			if(self.img.tickCount > 30) {
+				self.img.tickCount = 0;
+				if(self.img.frameIndex == 0) {
+					self.img.frameIndex = 1;
+				} else {
+					self.img.frameIndex = 0;
+				}
+			}
+		} else {
+			tickCount = 0;
+		}
+		
+		if(self.clickFire) {
+			self.fireBullet(self.mouseAngle);
+		}
 	}
+	self.fireBullet = function(angle) {
+		var b = Bullet(angle);
+		b.x = self.x + 15;
+		b.y = self.y + 20;
+	}
+	
 	self.updateSpd = function() {
 		if(self.pressingRight) {
 			self.spdX = self.maxSpd;
-			self.img = "../client/img/player/temp-r.png";
+			self.img.source = "../client/img/player/temp_sheet_r.png";
 		}else if(self.pressingLeft) {
 			self.spdX = -self.maxSpd;
-			self.img = "../client/img/player/temp.png";
+			self.img.source = "../client/img/player/temp_sheet.png";
 		}else{
 			self.spdX = 0;
 		}
@@ -109,6 +140,10 @@ Player.onConnect = function(socket) {
 			player.pressingUp = data.state;
 		else if(data.inputID === 'down')
 			player.pressingDown = data.state;
+		else if(data.inputID === 'fire')
+			player.clickFire = data.state;
+		else if(data.inputID === 'mouseangle')
+			player.mouseAngle = data.state;
 	});
 }
 Player.onDisconnect = function(socket) {
@@ -122,8 +157,9 @@ Player.update = function() {
 		pack.push({
 			x:player.x,
 			y:player.y,
-			img:player.img,
+			img:player.img.source,
 			facingRight:player.facingRight,
+			frame:player.img.frameIndex,
 		});
 	}
 	return pack;
@@ -149,9 +185,6 @@ var Bullet = function(angle) {
 }
 Bullet.list = {};
 Bullet.update = function() {
-	if(Math.random() < 0.1) {
-		Bullet(Math.random()*360);
-	}
 	
 	var pack = [];
 	for(var i in Bullet.list) {

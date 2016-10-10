@@ -1,0 +1,4 @@
+extend core/core.jade
+block content
+  div(id='canvas_wrapper' stlye='text-align: center')
+  canvas(style='padding-top: 30px;' id='ctx' width='500' height='500')

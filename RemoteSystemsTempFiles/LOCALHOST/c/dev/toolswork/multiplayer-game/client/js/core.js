@@ -6,12 +6,14 @@ $( document ).ready(function() {
 core = function() {
 	var $this = this;
 	//this.local_url = 'tdk-portfolio-herokuapp.com';
+	var width = $(document).width() - 20;
+	var height = 200;
 	
 	this.init = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	
-		$('#ctx').css('width', $(document).width());
+		$('#ctx').css('width', width);
 		ctx.font = '30px Arial';
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      //http://localhost:3000
+		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
 		socket.on('greeting-from-server', function (message) { 
 			console.log(message.greeting);
 			socket.emit('greeting-from-client', { 
@@ -20,17 +22,36 @@ core = function() {
 		});
 		
 		socket.on('newPositions', function(data) {
-			ctx.clearRect(0,0,$(document).width(),500);
+			ctx.clearRect(0,0,width,height);
 			for(var i = 0; i < data.player.length; i++) {
 				var temp_img = document.createElement('img');
 				temp_img.src = data.player[i].img;
 				temp_img.id = data.player[i].id;
-				ctx.drawImage(temp_img, data.player[i].x, data.player[i].y);
+				if(data.player[i].frame == 0) {
+					ctx.drawImage(temp_img, 0, 0, 64, 64, data.player[i].x, data.player[i].y, 64, 64);
+				} else {
+					ctx.drawImage(temp_img, 64, 0, 64, 64, data.player[i].x, data.player[i].y, 64, 64);
+				}
 			}
 			for(var i = 0; i < data.bullet.length; i++) {
 				ctx.fillRect(data.bullet[i].x - 5, data.bullet[i].y - 5, 10, 10);
 			}
 		});
+		
+		document.onmousedown = function(e) {
+			socket.emit('keypress', {inputID:'fire', state:true})
+		}
+		
+		document.onmouseup = function(e) {
+			socket.emit('keypress', {inputID:'fire', state:false})
+		}
+		
+		document.onmousemove = function(e) {
+			var x = e.clientX - 1000;
+			var y = e.clientY - 250;
+			var angle = Math.atan2(y,x) / Math.PI * 180;
+			socket.emit('keypress', {inputID:'mouseangle', state:angle})
+		}
 		
 		document.onkeydown = function(e) {
 			if(e.keyCode == 68)//d
