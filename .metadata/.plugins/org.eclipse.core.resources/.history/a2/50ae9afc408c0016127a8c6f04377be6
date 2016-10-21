@@ -1,3 +1,0 @@
-extend core
-block content
-  h1(style='padding-top: 20px;') hello world

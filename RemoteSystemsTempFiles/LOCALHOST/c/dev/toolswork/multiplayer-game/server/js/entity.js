@@ -1,0 +1,19 @@
+module.exports = {
+	init: function() {
+		var self = {
+			id: "",
+			x: 100,
+			y: 100,
+			spdX: 0,
+			spdY: 0,
+		}
+		self.update = function() {
+			self.updatePosition();
+		}
+		self.updatePosition = function() {
+			self.y += self.spdY;
+			self.x += self.spdX;
+		}
+		return self;
+	}
+}
