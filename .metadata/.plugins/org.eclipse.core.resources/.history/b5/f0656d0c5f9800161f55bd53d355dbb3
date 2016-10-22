@@ -19,7 +19,7 @@ core = function() {
 		socket.on('newPositions', function(data) { //whenever new positions are sent out
 			ctx.clearRect(0,0,width,height); //clear canvas
 			for(var i = 0; i < data.player.length; i++) { //foreach player in the game
-				ctx.fillText(data.player[i].username, data.player[i].x + 5, data.player[i].y + 5); //remap usernames
+				ctx.fillText(data.player[i].username, data.player[i].x + 15, data.player[i].y + 5); //remap usernames
 				var temp_img = document.createElement('img'); //generate image element
 				temp_img.src = data.player[i].img; //provide proper sprite
 				temp_img.id = data.player[i].id; //set id

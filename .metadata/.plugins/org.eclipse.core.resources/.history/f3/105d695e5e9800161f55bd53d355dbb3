@@ -19,7 +19,7 @@ core = function() {
 		socket.on('newPositions', function(data) { //whenever new positions are sent out
 			ctx.clearRect(0,0,width,height); //clear canvas
 			for(var i = 0; i < data.player.length; i++) { //foreach player in the game
-				ctx.fillText(data.player[i].username, data.player[i].x + 5, data.player[i].y + 5); //remap usernames
+				ctx.fillText(data.player[i].username, data.player[i].x + 40, data.player[i].y + 10); //remap usernames
 				var temp_img = document.createElement('img'); //generate image element
 				temp_img.src = data.player[i].img; //provide proper sprite
 				temp_img.id = data.player[i].id; //set id
@@ -44,9 +44,9 @@ core = function() {
 					}
 				} else if(data.player[i].status.localeCompare('standing') == 0) {
 					if(data.player[i].frame <= 4 ) { //if frame is 0
-						ctx.drawImage(temp_img, 0, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+						ctx.drawImage(temp_img, 0, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut first half of sprite sheet
 					} else if(data.player[i].frame >= 5 ) { //if frame is 0
-						ctx.drawImage(temp_img, smallImgSize, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 120, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					}
 				}
 			}

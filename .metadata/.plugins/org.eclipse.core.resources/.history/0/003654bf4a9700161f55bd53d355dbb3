@@ -11,42 +11,41 @@ core = function() {
 	
 	this.init = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	//create 2d canvas
-		var smallImgSize = 40;
 		ctx.fillStyle = 'white';
 		$('#ctx').css('width', width);
-		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
+		var socket = io('https://multi-demo.herokuapp.com/'); //https://multi-demo.herokuapp.com/      localhost:3000
 		$this.initButtons(socket);
 		socket.on('newPositions', function(data) { //whenever new positions are sent out
 			ctx.clearRect(0,0,width,height); //clear canvas
 			for(var i = 0; i < data.player.length; i++) { //foreach player in the game
-				ctx.fillText(data.player[i].username, data.player[i].x + 5, data.player[i].y + 5); //remap usernames
+				ctx.fillText(data.player[i].username, data.player[i].x + 40, data.player[i].y + 10); //remap usernames
 				var temp_img = document.createElement('img'); //generate image element
 				temp_img.src = data.player[i].img; //provide proper sprite
 				temp_img.id = data.player[i].id; //set id
 				temp_img.width = (temp_img.width); //set width
 				if(data.player[i].status.localeCompare('running') == 0) {
 					if(data.player[i].frame <= 0) { //if frame is 0
-						ctx.drawImage(temp_img, 0, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+						ctx.drawImage(temp_img, 0, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut first half of sprite sheet
 					} else if(data.player[i].frame == 1) {
-						ctx.drawImage(temp_img, smallImgSize, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 120, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					} else if(data.player[i].frame == 2) {
-						ctx.drawImage(temp_img, smallImgSize * 2, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 240, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					} else if(data.player[i].frame == 3) {
-						ctx.drawImage(temp_img, smallImgSize * 3, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 360, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					} else if(data.player[i].frame == 4) {
-						ctx.drawImage(temp_img, smallImgSize * 4, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 480, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					} else if(data.player[i].frame == 5) {
-						ctx.drawImage(temp_img, smallImgSize * 4, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 600, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					} else if(data.player[i].frame == 6) {
-						ctx.drawImage(temp_img, smallImgSize * 5, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 720, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					} else if(data.player[i].frame >= 7) {
-						ctx.drawImage(temp_img, smallImgSize * 6, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 840, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					}
 				} else if(data.player[i].status.localeCompare('standing') == 0) {
 					if(data.player[i].frame <= 4 ) { //if frame is 0
-						ctx.drawImage(temp_img, 0, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+						ctx.drawImage(temp_img, 0, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut first half of sprite sheet
 					} else if(data.player[i].frame >= 5 ) { //if frame is 0
-						ctx.drawImage(temp_img, smallImgSize, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
+						ctx.drawImage(temp_img, 120, 0, 120, 120, data.player[i].x, data.player[i].y, 120, 120); //cut second half of sprite sheet
 					}
 				}
 			}
