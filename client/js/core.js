@@ -18,14 +18,14 @@ core = function() {
 		var smallImgSize = 40;
 		ctx.fillStyle = 'white';
 		$('#ctx').css('width', width);
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      localhost:3000
+		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com/      localhost:3000
 		$this.initButtons(socket);
 		socket.on('init', function(data) { //whenever new positions are sent out
 			//initilization class package
 			var temp_player = new player_class(data[0].id, data[0].username, 
-					data[0].pressingRight, data[0].pressingLeft, data[0].pressingUp, 
-					data[0].pressingDown, data[0].clickFire, data[0].right, data[0].status, 
-					data[0].source, data[0].frameIndex, data[0].tickCount, data[0].x, data[0].y);
+				data[0].pressingRight, data[0].pressingLeft, data[0].pressingUp, 
+				data[0].pressingDown, data[0].clickFire, data[0].right, data[0].status, 
+				data[0].source, data[0].frameIndex, data[0].tickCount, data[0].x, data[0].y);
 			playerList.players.push(temp_player);
 		});
 		socket.on('update', function(data) { //whenever new positions are sent out

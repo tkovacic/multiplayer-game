@@ -15,7 +15,7 @@ module.exports = {
 		self.right = false;
 		self.status = 'standing';
 		self.img = {
-				source:"../../client/img/player/template-still-l.png",
+				source:"../../client/img/player/still/template-still-l.png",
 				frameIndex:0,
 				tickCount:0,
 		};
@@ -47,21 +47,21 @@ module.exports = {
 				self.spdX = self.maxSpd;
 				self.status = 'running';
 				self.right = true;
-				self.img.source = "../../client/img/player/template-run-r.png";
+				self.img.source = "../../client/img/player/run/template-run-r.png";
 			}else if(self.pressingLeft) {
 				self.spdX = -self.maxSpd;
 				self.status = 'running';
 				self.right = false;
-				self.img.source = "../../client/img/player/template-run-l.png";
+				self.img.source = "../../client/img/player/run/template-run-l.png";
 			}else{
 				self.spdX = 0;
 				if(!self.pressingRight) {
 					if(!self.pressingLeft) {
 						self.status = 'standing';
 						if(self.right == true) {
-							self.img.source = "../../client/img/player/template-still-r.png";
+							self.img.source = "../../client/img/player/still/template-still-r.png";
 						} else {
-							self.img.source = "../../client/img/player/template-run-l.png";
+							self.img.source = "../../client/img/player/run/template-run-l.png";
 						}
 					}
 				}
@@ -70,17 +70,17 @@ module.exports = {
 				self.status = 'running';
 				self.spdY = -self.maxSpd;
 				if(self.right == true) {
-					self.img.source = "../../client/img/player/template-run-r.png";
+					self.img.source = "../../client/img/player/run/template-run-r.png";
 				} else {
-					self.img.source = "../../client/img/player/template-run-l.png";
+					self.img.source = "../../client/img/player/run/template-run-l.png";
 				}
 			}else if(self.pressingDown) {
 				self.status = 'running';
 				self.spdY = self.maxSpd;
 				if(self.right == true) {
-					self.img.source = "../../client/img/player/template-run-r.png";
+					self.img.source = "../../client/img/player/run/template-run-r.png";
 				} else {
-					self.img.source = "../../client/img/player/template-run-l.png";
+					self.img.source = "../../client/img/player/run/template-run-l.png";
 				}
 			}else{
 				self.spdY = 0;
@@ -88,9 +88,9 @@ module.exports = {
 					if(!self.pressingLeft) {
 						self.status = 'standing';
 						if(self.right == true) {
-							self.img.source = "../../client/img/player/template-still-r.png";
+							self.img.source = "../../client/img/player/still/template-still-r.png";
 						} else {
-							self.img.source = "../../client/img/player/template-still-l.png";
+							self.img.source = "../../client/img/player/still/template-still-l.png";
 						}
 					}
 				}
