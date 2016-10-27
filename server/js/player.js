@@ -3,18 +3,15 @@ var Entity = require("./entity.js");
 module.exports = {
 	init: function(id, playerCount) {
 		var self = Entity.init();
-		self.place = playerCount + 1;
 		self.id = id;
-		self.username = 'Guest ' + playerCount;
-		self.number = "" + Math.floor(10 * Math.random());
+		self.username = 'Guest ';
 		self.pressingRight = false;
 		self.pressingLeft = false;
 		self.pressingUp = false;
 		self.pressingDown = false;
 		self.clickFire = false;
 		self.mouseAngle = 0;
-		self.pressingDown = false;
-		self.maxSpd = 3;
+		self.maxSpd = 2;
 		self.right = false;
 		self.status = 'standing';
 		self.img = {
@@ -42,7 +39,7 @@ module.exports = {
 			}
 		}
 		self.fireBullet = function(angle) {
-			console.log('bang');
+			console.log('bang: ' + angle.toString());
 		}
 		
 		self.updateSpd = function() {
@@ -126,6 +123,33 @@ module.exports = {
 			player.username = data.inputID;
 		});
 	},
+	init_pack: function(playerList) {
+		var pack = [];
+		for(var i in playerList) {
+			var player = playerList[i];
+			player.update();
+			pack.push({
+				id:id,
+				username:'Guest ',
+				pressingRight:false,
+				pressingLeft:false,
+				pressingUp:false,
+				pressingDown:false,
+				clickFire:false,
+				mouseAngle:0,
+				maxSpd:2,
+				right:false,
+				status:'standing',
+				source:"../../client/img/player/template-still-l.png",
+				frameIndex:0,
+				tickCount:0,
+				username:player.username,
+				x:player.x,
+				y:player.y,
+			});
+		}
+		return pack;
+	},
 	refresh_pack: function(playerList) {
 		var pack = [];
 		for(var i in playerList) {
@@ -136,7 +160,7 @@ module.exports = {
 				x:player.x,
 				y:player.y,
 				img:player.img.source,
-				facingRight:player.facingRight,
+				facingRight:player.right,
 				frame:player.img.frameIndex,
 				status:player.status,
 			});

@@ -44,6 +44,15 @@ server.listen(process.env.PORT || 3000, function() {
 var SOCKET_LIST = {};
 var playerCount = 1;
 var Player = playerClass;
+var initPack = {
+		player: []
+}
+var updatePack = {
+		player: []
+}
+var removePack = {
+		player: []
+}
 Player.list = {};
 
 Player.onConnect = function(socket) {
@@ -51,10 +60,14 @@ Player.onConnect = function(socket) {
 	Player.list[socket.id] = player;
 	Player.socket_events(socket, player);
 	playerCount += 1;
+	
+	initPack.player.push(player);
 }
 Player.onDisconnect = function(socket) {
 	playerCount -= 1;
 	delete Player.list[socket.id];
+	
+	removePack.player.push(socket.id);
 }
 
 
@@ -78,6 +91,18 @@ setInterval(function() {
 	
 	for(var i in SOCKET_LIST) {
 		var socket = SOCKET_LIST[i];
-		socket.emit('newPositions', pack);
+		if(removePack.player.length > 0) {
+			socket.emit('remove', removePack.player);
+		}
+		if(initPack.player.length > 0) {
+			socket.emit('init', initPack.player);
+		}
+		socket.emit('update', pack);
+		initPack = {
+				player: []
+		}
+		removePack = {
+				player: []
+		}
 	}
 },1000/25); //1000/25
