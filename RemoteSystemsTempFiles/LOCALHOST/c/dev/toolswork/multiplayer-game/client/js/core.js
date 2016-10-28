@@ -19,7 +19,7 @@ core = function() {
 		var smallImgSize = 40;
 		ctx.fillStyle = 'white';
 		$('#ctx').css('width', width);
-		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com  //localhost:3000   
+		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com  //localhost:3000   
 		$this.initButtons(socket);
 		socket.on('init', function(data) { //whenever new positions are sent out
 			//initilization class package
