@@ -4,18 +4,19 @@ module.exports = {
 	init: function(id, playerCount) {
 		var self = Entity.init();
 		self.id = id;
-		self.username = 'Guest ';
+		self.username = 'Guest';
 		self.pressingRight = false;
 		self.pressingLeft = false;
 		self.pressingUp = false;
 		self.pressingDown = false;
 		self.clickFire = false;
 		self.mouseAngle = 0;
-		self.maxSpd = 2;
+		self.maxSpd = 3;
 		self.right = false;
 		self.status = 'standing';
 		self.img = {
-				source:"../../client/img/player/still/template-still-l.png",
+				hSource:"../../client/img/player/head/still/h1/template-h1-still-l.png",
+				bSource:"../../client/img/player/body/still/b1/template-b1-still-l.png",
 				frameIndex:0,
 				tickCount:0,
 		};
@@ -25,9 +26,9 @@ module.exports = {
 			super_update();
 			
 			self.img.tickCount += 1;
-			if(self.img.tickCount > 3) {
+			if(self.img.tickCount > 2) {
 				self.img.tickCount = 0;
-				if(self.img.frameIndex <= 6) {
+				if(self.img.frameIndex <= 5) {
 					self.img.frameIndex +=1;
 				} else {
 					self.img.frameIndex = 0;
@@ -47,21 +48,25 @@ module.exports = {
 				self.spdX = self.maxSpd;
 				self.status = 'running';
 				self.right = true;
-				self.img.source = "../../client/img/player/run/template-run-r.png";
+				self.img.hSource = "../../client/img/player/head/run/h1/template-h1-run-r.png";
+				self.img.bSource = "../../client/img/player/body/run/b1/template-b1-run-r.png";
 			}else if(self.pressingLeft) {
 				self.spdX = -self.maxSpd;
 				self.status = 'running';
 				self.right = false;
-				self.img.source = "../../client/img/player/run/template-run-l.png";
+				self.img.hSource = "../../client/img/player/head/run/h1/template-h1-run-l.png";
+				self.img.bSource = "../../client/img/player/body/run/b1/template-b1-run-l.png";
 			}else{
 				self.spdX = 0;
 				if(!self.pressingRight) {
 					if(!self.pressingLeft) {
 						self.status = 'standing';
 						if(self.right == true) {
-							self.img.source = "../../client/img/player/still/template-still-r.png";
+							self.img.hSource = "../../client/img/player/head/still/h1/template-h1-still-r.png";
+							self.img.bSource = "../../client/img/player/body/still/b1/template-b1-still-r.png";
 						} else {
-							self.img.source = "../../client/img/player/run/template-run-l.png";
+							self.img.hSource = "../../client/img/player/head/still/h1/template-h1-still-l.png";
+							self.img.bSource = "../../client/img/player/body/still/b1/template-b1-still-l.png";
 						}
 					}
 				}
@@ -70,17 +75,21 @@ module.exports = {
 				self.status = 'running';
 				self.spdY = -self.maxSpd;
 				if(self.right == true) {
-					self.img.source = "../../client/img/player/run/template-run-r.png";
+					self.img.hSource = "../../client/img/player/head/run/h1/template-h1-run-r.png";
+					self.img.bSource = "../../client/img/player/body/run/b1/template-b1-run-r.png";
 				} else {
-					self.img.source = "../../client/img/player/run/template-run-l.png";
+					self.img.hSource = "../../client/img/player/head/run/h1/template-h1-run-l.png";
+					self.img.bSource = "../../client/img/player/body/run/b1/template-b1-run-l.png";
 				}
 			}else if(self.pressingDown) {
 				self.status = 'running';
 				self.spdY = self.maxSpd;
 				if(self.right == true) {
-					self.img.source = "../../client/img/player/run/template-run-r.png";
+					self.img.hSource = "../../client/img/player/head/run/h1/template-h1-run-r.png";
+					self.img.bSource = "../../client/img/player/body/run/b1/template-b1-run-r.png";
 				} else {
-					self.img.source = "../../client/img/player/run/template-run-l.png";
+					self.img.hSource = "../../client/img/player/head/run/h1/template-h1-run-l.png";
+					self.img.bSource = "../../client/img/player/body/run/b1/template-b1-run-l.png";
 				}
 			}else{
 				self.spdY = 0;
@@ -88,16 +97,14 @@ module.exports = {
 					if(!self.pressingLeft) {
 						self.status = 'standing';
 						if(self.right == true) {
-							self.img.source = "../../client/img/player/still/template-still-r.png";
+							self.img.hSource = "../../client/img/player/head/still/h1/template-h1-still-r.png";
+							self.img.bSource = "../../client/img/player/body/still/b1/template-b1-still-r.png";
 						} else {
-							self.img.source = "../../client/img/player/still/template-still-l.png";
+							self.img.hSource = "../../client/img/player/head/still/h1/template-h1-still-l.png";
+							self.img.bSource = "../../client/img/player/body/still/b1/template-b1-still-l.png";
 						}
 					}
 				}
-			}
-			
-			if(self.pressingUp != true && self.pressingDown != true && self.pressingRight != true && self.pressingLeft != true) {
-				
 			}
 		}
 		
@@ -140,7 +147,8 @@ module.exports = {
 				maxSpd:2,
 				right:false,
 				status:'standing',
-				source:"../../client/img/player/template-still-l.png",
+				headSource:"../../client/img/player/head/still/h1/template-h1-still-l.png",
+				bodySource:"../../client/img/player/body/still/b1/template-b1-still-l.png",
 				frameIndex:0,
 				tickCount:0,
 				username:player.username,
@@ -159,7 +167,8 @@ module.exports = {
 				username:player.username,
 				x:player.x,
 				y:player.y,
-				img:player.img.source,
+				hSrc:player.img.hSource,
+				bSrc:player.img.bSource,
 				facingRight:player.right,
 				frame:player.img.frameIndex,
 				status:player.status,

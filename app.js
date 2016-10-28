@@ -6,8 +6,6 @@ var final_html;
 var template_index = require("jade").compileFile(__dirname + "/views/index.jade");
 var server = require('http').Server(app);
 
-var playerClass = require("./server/js/player.js");
-
 //views
 app.set("views", __dirname + "/views");
 app.set("view engine", "jade");
@@ -43,7 +41,7 @@ server.listen(process.env.PORT || 3000, function() {
 
 var SOCKET_LIST = {};
 var playerCount = 1;
-var Player = playerClass;
+var Player = require("./server/js/player.js");
 var initPack = {
 		player: []
 }

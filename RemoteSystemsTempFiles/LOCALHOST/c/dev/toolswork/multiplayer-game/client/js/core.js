@@ -8,51 +8,50 @@ core = function() {
 	//this.local_url = 'tdk-portfolio-herokuapp.com';
 	var width = $(document).width() - 20;
 	var height = 200;
+	var updateCounter = 0;
+	var clientPlayer = false;
+	var playerList = {
+			players: [],
+	}
 	
 	this.init = function() {
 		var ctx = document.getElementById('ctx').getContext('2d');	//create 2d canvas
 		var smallImgSize = 40;
 		ctx.fillStyle = 'white';
 		$('#ctx').css('width', width);
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com/      localhost:3000
+		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com  //localhost:3000   
 		$this.initButtons(socket);
-		socket.on('newPositions', function(data) { //whenever new positions are sent out
+		socket.on('init', function(data) { //whenever new positions are sent out
+			//initilization class package
+			var temp_player = new player_class(data[0].id, data[0].username, 
+				data[0].pressingRight, data[0].pressingLeft, data[0].pressingUp, 
+				data[0].pressingDown, data[0].clickFire, data[0].right, data[0].status, 
+				data[0].hSource, data[0].bSource, data[0].frameIndex, data[0].tickCount, data[0].x, data[0].y);
+			if(clientPlayer == false) {
+				temp_player.myPlayer = true;
+				clientPlayer = true;
+			}
+			playerList.players.push(temp_player);
+		});
+		socket.on('update', function(data) { //whenever new positions are sent out
+			//update package
+			if(playerList.players.length > updateCounter) {
+				updateCounter = playerList.players.length;
+//				console.log(data.player);
+			}
 			ctx.clearRect(0,0,width,height); //clear canvas
 			for(var i = 0; i < data.player.length; i++) { //foreach player in the game
-				ctx.fillText(data.player[i].username, data.player[i].x + 5, data.player[i].y + 5); //remap usernames
-				var temp_img = document.createElement('img'); //generate image element
-				temp_img.src = data.player[i].img; //provide proper sprite
-				temp_img.id = data.player[i].id; //set id
-				temp_img.width = (temp_img.width); //set width
-				if(data.player[i].status.localeCompare('running') == 0) {
-					if(data.player[i].frame <= 0) { //if frame is 0
-						ctx.drawImage(temp_img, 0, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut first half of sprite sheet
-					} else if(data.player[i].frame == 1) {
-						ctx.drawImage(temp_img, smallImgSize, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					} else if(data.player[i].frame == 2) {
-						ctx.drawImage(temp_img, smallImgSize * 2, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					} else if(data.player[i].frame == 3) {
-						ctx.drawImage(temp_img, smallImgSize * 3, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					} else if(data.player[i].frame == 4) {
-						ctx.drawImage(temp_img, smallImgSize * 4, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					} else if(data.player[i].frame == 5) {
-						ctx.drawImage(temp_img, smallImgSize * 4, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					} else if(data.player[i].frame == 6) {
-						ctx.drawImage(temp_img, smallImgSize * 5, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					} else if(data.player[i].frame >= 7) {
-						ctx.drawImage(temp_img, smallImgSize * 6, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					}
-				} else if(data.player[i].status.localeCompare('standing') == 0) {
-					if(data.player[i].frame <= 4 ) { //if frame is 0
-						ctx.drawImage(temp_img, 0, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut first half of sprite sheet
-					} else if(data.player[i].frame >= 5 ) { //if frame is 0
-						ctx.drawImage(temp_img, smallImgSize, 0, smallImgSize, smallImgSize, data.player[i].x, data.player[i].y, smallImgSize, smallImgSize); //cut second half of sprite sheet
-					}
+				$this.drawPlayer(data.player[i], smallImgSize, ctx);
+			}
+		});
+		socket.on('remove', function(data) { //whenever new positions are sent out
+			//remove package
+			for(var i = 0; i < data.length; i++) {
+				if(playerList.players[i] = data) {
+					console.log('deleted: ' + playerList.players[i]);
+					delete playerList.players[i];
 				}
 			}
-			//for(var i = 0; i < data.bullet.length; i++) {
-			//	ctx.fillRect(data.bullet[i].x - 5, data.bullet[i].y - 5, 10, 10);
-			//}
 		});
 		
 		document.onmousedown = function(e) {
@@ -96,6 +95,48 @@ core = function() {
 			window.location = 'https://tdk-portfolio.herokuapp.com'
 		}
 	};
+	
+	this.drawPlayer = function(playerObj, smallImgSize, ctx) {
+		ctx.fillText(playerObj.username, playerObj.x + 5, playerObj.y + 5); //remap usernames
+		var temp_head = document.createElement('img'); //generate image element
+		var temp_body = document.createElement('img');
+		temp_head.src = playerObj.hSrc; //provide proper sprite
+		temp_body.src = playerObj.bSrc;
+		temp_head.id = playerObj.id + '_head_img'; //set id
+		temp_body.id = playerObj.id + '_body_img';
+		if(playerObj.status.localeCompare('running') == 0) {
+			if(playerObj.frame <= 0) { //if frame is 0
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 1) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 2) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 3) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 4) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 5) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 6) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			}
+		} else if(playerObj.status.localeCompare('standing') == 0) {
+			if(playerObj.frame <= 4 ) { //if frame is 0
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame >= 5 ) { //if frame is 0
+				ctx.drawImage(temp_head, smallImgSize, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			}
+		}
+	}
 	
 	this.initButtons = function(socket) {
 		$('#usernameBtn').on('click', function() {
