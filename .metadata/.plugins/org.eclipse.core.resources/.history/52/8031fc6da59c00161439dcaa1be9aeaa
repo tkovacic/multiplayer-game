@@ -123,6 +123,9 @@ core = function() {
 			} else if(playerObj.frame == 5) {
 				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
 				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 6) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
 			}
 		} else if(playerObj.status.localeCompare('standing') == 0) {
 			if(playerObj.frame <= 4 ) { //if frame is 0

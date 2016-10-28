@@ -26,9 +26,9 @@ module.exports = {
 			super_update();
 			
 			self.img.tickCount += 1;
-			if(self.img.tickCount > 3) {
+			if(self.img.tickCount > 2) {
 				self.img.tickCount = 0;
-				if(self.img.frameIndex <= 4) {
+				if(self.img.frameIndex <= 5) {
 					self.img.frameIndex +=1;
 				} else {
 					self.img.frameIndex = 0;

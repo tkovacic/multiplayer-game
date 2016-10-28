@@ -19,7 +19,7 @@ core = function() {
 		var smallImgSize = 40;
 		ctx.fillStyle = 'white';
 		$('#ctx').css('width', width);
-		var socket = io('https://multi-demo.herokuapp.com'); //https://multi-demo.herokuapp.com  //localhost:3000   
+		var socket = io('localhost:3000'); //https://multi-demo.herokuapp.com  //localhost:3000   
 		$this.initButtons(socket);
 		socket.on('init', function(data) { //whenever new positions are sent out
 			//initilization class package
@@ -121,6 +121,9 @@ core = function() {
 				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
 				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
 			} else if(playerObj.frame == 5) {
+				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
+			} else if(playerObj.frame == 6) {
 				ctx.drawImage(temp_head, 0, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
 				ctx.drawImage(temp_body, smallImgSize * playerObj.frame, 0, smallImgSize, smallImgSize, playerObj.x, playerObj.y, smallImgSize, smallImgSize); //cut first half of sprite sheet
 			}

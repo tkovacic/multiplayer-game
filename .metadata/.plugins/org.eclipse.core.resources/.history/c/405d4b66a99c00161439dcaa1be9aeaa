@@ -11,7 +11,7 @@ module.exports = {
 		self.pressingDown = false;
 		self.clickFire = false;
 		self.mouseAngle = 0;
-		self.maxSpd = 3;
+		self.maxSpd = 2;
 		self.right = false;
 		self.status = 'standing';
 		self.img = {
@@ -26,7 +26,7 @@ module.exports = {
 			super_update();
 			
 			self.img.tickCount += 1;
-			if(self.img.tickCount > 3) {
+			if(self.img.tickCount > 2) {
 				self.img.tickCount = 0;
 				if(self.img.frameIndex <= 4) {
 					self.img.frameIndex +=1;
